@@ -1,0 +1,31 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+todo_file="/home/tsn/.config/tsn/vault/DuhVault/Today/Todo.md"
+
+if [ -n "$1" ] && [ -n "$2" ]; then
+  if [ "$1" == "remove" ]; then
+    tmp="- $2"
+    grep -v "${tmp:6}" $todo_file > tmp_todo_file && mv tmp_todo_file $todo_file
+  elif [ "$1" == "add" ]; then
+    if [ $($2 | xargs) != " " ]; then
+      echo '- [ ]' $2 >> $todo_file
+    fi
+  elif [ "$1" == "toggle" ]; then
+    tmp="- $2"
+    if [ "${tmp:3:1}" == " " ]; then
+      cat $todo_file | sed -e "s/\- \[ \] ${tmp:6}/- [x] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
+    else
+      cat $todo_file | sed -e "s/- \[x\] ${tmp:6}/- [ ] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
+    fi
+  fi
+else
+  cat $todo_file | sed -e 's/- //' | $fzf \
+    --header=$'Press CTRL-A to ADD\nPress CTRL-X to DELETE\nPress CTRL-T to TOGGLE COMPLETION\nPress CTRL-C to QUIT\n' --header-lines=0 \
+    --bind "ctrl-a:execute(sh $SCRIPT_DIR/todos add "{q}")+reload(cat $todo_file | sed -e 's/- //')+clear-query" \
+    --bind "ctrl-x:execute(sh $SCRIPT_DIR/todos remove "{}")+reload(cat $todo_file | sed -e 's/- //')" \
+    --bind "ctrl-t:execute(sh $SCRIPT_DIR/todos toggle "{}")+reload(cat $todo_file | sed -e 's/- //')"
+fi
+

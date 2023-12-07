@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+selection=$(tmux list-buffers | $fzf)
+
+if [ -n "$selection" ]; then
+  if is_tmux; then
+    echo $selection | cut -d ':' -f1 | xargs -I{} sh -c 'tmux paste-buffer -b {}'
+  else
+    echo $selection | cut -d ':' -f3 | xargs | xclip -selection clipboard
+  fi
+fi

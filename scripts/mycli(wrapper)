@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+echo "mycli (mysql cli client)"
+
+read -p "Host (localhost): " HOST; HOST=${HOST:-localhost}
+read -p "Port (3306): " PORT; PORT=${PORT:-3306}
+read -p "User (root): " USER; USER=${USER:-root}
+read -s -p "Pass (root): " PASS; PASS=${PASS:-root}
+
+if is_tmux; then
+  tmux popup -E mycli -u $USER -p $PASS -h $HOST -P $PORT
+else
+  mycli -u $USER -p $PASS -h $HOST -P $PORT
+fi

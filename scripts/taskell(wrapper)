@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+if is_tmux; then
+  curr_dir=$(tmux display-message -p -F "#{pane_current_path}")
+  (cd $curr_dir && exec taskell)
+else
+  (cd $(pwd) && exec taskell)
+fi

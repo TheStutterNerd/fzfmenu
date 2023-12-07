@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+# TODO: make this script not window manager specific
+
+if is_tmux; then
+  tmux popup -E i3-dmenu-desktop --dmenu=fzf
+else
+  i3-dmenu-desktop --dmenu=fzf
+fi
+

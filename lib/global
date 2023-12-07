@@ -1,0 +1,15 @@
+#!/bin/bash
+
+is_tmux() {
+  if [ -n "$TMUX" ]; then
+    true
+  else
+    false
+  fi
+}
+
+if is_tmux; then
+  fzf="fzf-tmux -p"
+else
+  fzf="fzf"
+fi

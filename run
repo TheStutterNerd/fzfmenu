@@ -1,0 +1,43 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+menu=$(ls -1 $SCRIPT_DIR/scripts/ | sed -e 's/(wrapper)//')
+menu+=$'\npipe-viewer'
+menu+=$'\nranger'
+menu+=$'\nbtop'
+menu+=$'\nlazydocker'
+menu+=$'\nglow'
+
+selection=$(printf '%s\n' $menu | $fzf)
+
+if [ -n "$selection" ]; then
+  script=$(ls -1 $SCRIPT_DIR/scripts/ | grep "$selection")
+  if [ -n "$script" ]; then
+    if [[ "$script" == *"(wrapper)"* ]] && is_tmux; then
+      tmux popup -E sh $SCRIPT_DIR/scripts/$script
+    else
+      sh $SCRIPT_DIR/scripts/$script
+    fi
+  else
+    if is_tmux; then
+      tmux popup -E $selection
+    else
+      $selection
+    fi
+  fi
+fi
+
+exit 0
+
+
+# case $selection in
+#   "test1")
+#     printf 'test1\ntest1\ntest1' | fzf ;;
+#   "test2")
+#     printf 'test2\ntest2\ntest2' | fzf ;;
+#   "test3")
+#     printf 'test3\ntest3\ntest3' | fzf ;;
+# esac

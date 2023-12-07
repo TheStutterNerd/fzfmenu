@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+project=$(ls ~/Projects/ | $fzf)
+
+if [ -n "$project" ]; then
+  selection=$(ls ~/Projects/$project | $fzf )
+fi

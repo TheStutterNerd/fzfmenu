@@ -1,0 +1,37 @@
+#!/bin/bash
+
+source $HOME/.config/tsn/scripts/tmux/menu/lib/global
+
+declare -A cfglist
+
+cfglist[cfg-nvim]="$HOME/.config/nvim/lua/user/init.lua"
+cfglist[cfg-i3]="$HOME/.config/i3/config"
+cfglist[cfg-kitty]="$HOME/.config/kitty/kitty.conf"
+cfglist[cfg-mpv]="$HOME/.config/mpv/mpv.conf"
+cfglist[cfg-omz]="$HOME/.oh-my-zsh/"
+cfglist[cfg-pol]="$HOME/.config/polybar/"
+cfglist[cfg-qtile]="$HOME/.config/qtile/config.py"
+cfglist[cfg-qutebrowser]="$HOME/.config/qutebrowser/config.py"
+cfglist[cfg-ranger]="$HOME/.config/ranger/rc.conf"
+cfglist[cfg-rofi]="$HOME/.config/rofi/"
+cfglist[cfg-sxhkd]="$HOME/.config/sxhkd/sxhkdrc"
+cfglist[cfg-tmux]="$HOME/.tmux.conf"
+cfglist[cfg-zsh]="$HOME/.zshrc"
+cfglist[cfg-zshenv]="$HOME/.zshenv"
+
+selection=$(for key in "${!cfglist[@]}"
+  do
+    echo "$key ${cfglist[$key]}"
+  done | $fzf
+)
+
+file=$(echo $selection | cut -d ' ' -f2)
+location=$(echo $file | rev | cut -d '/' -f2- | rev)
+
+if [ -n "$file" ]; then
+  if is_tmux; then
+    tmux new-window "cd $location; nvim $file"
+  else
+    cd $location; nvim $file
+  fi
+fi

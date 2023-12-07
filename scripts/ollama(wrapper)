@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ollama --help
+ollama list
+echo ""
+
+read -p "Query: " query
+
+ollama $query
+pkill 'ollama-runner'
