@@ -15,12 +15,13 @@ Any other script will just get ran using the typical `sh EXAMPLE_SCRIPT`.
 git clone git@github.com:TheStutterNerd/fzfmenu.git ~/.config/tsn/scripts/tmux/menu
 ```
 
-### Tmux binding
+#### Tmux binding
 
 `bind-key a run-shell -b "/home/$USER/.config/tsn/scripts/tmux/menu/run"`
+
 Above example binding is: Leader + a
 
-### Script list
+#### Script list
 
 - applications (currently only i3 dmenu)
 - clipboard (uses tmux paste buffer, otherwise uses xclip)
