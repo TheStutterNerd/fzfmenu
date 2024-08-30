@@ -2,8 +2,13 @@
 
 source $HOME/.config/tsn/scripts/tmux/menu/lib/global
 
-project=$(ls ~/Projects/ | $fzf)
+location=`
+for i in "$(ls -d ~/Projects/*/*/)"; do
+  echo "$i" 
+done | $fzf`
 
-if [ -n "$project" ]; then
-  selection=$(ls ~/Projects/$project | $fzf )
+if is_tmux; then
+  tmux new-window "cd $location; nvim"
+else
+  cd $location; nvim
 fi
