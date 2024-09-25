@@ -9,7 +9,6 @@ menu+=$'\npipe-viewer'
 menu+=$'\nranger'
 menu+=$'\nbtop'
 menu+=$'\nlazydocker'
-menu+=$'\nglow'
 
 selection=$(printf '%s\n' $menu | $fzf)
 

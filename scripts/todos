@@ -6,7 +6,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 todo_file="/home/tsn/.config/tsn/vault/DuhVault/Today/Todo.md"
 READ_FILE="tail -n +2 $todo_file"
 
-
 if [ -n "$1" ] && [ -n "$2" ]; then
   if [ "$1" == "remove" ]; then
     tmp="- $2"

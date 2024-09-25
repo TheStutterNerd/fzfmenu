@@ -27,7 +27,7 @@ Above example binding is: Leader + a
 - clipboard (uses tmux paste buffer, otherwise uses xclip)
 - configs (hardcoded key names and locations to open within nvim)
 - emojis (emoji selector)
-- projects (currently only lists folders/files, not finished yet)
+- projects (hardcoded location, opens projects in a new tmux window)
 - todos (obsidian fzf todo script to add, delete and toggle completion)
 - lazygit(wrapper) - wrapper to cd to the correct working directory before executing
 - mycli(wrapper) - wrapper to accept input before executing

@@ -13,3 +13,7 @@ if is_tmux; then
 else
   fzf="fzf"
 fi
+
+if [ "$1" == "--normal" ]; then
+  fzf="fzf"
+fi
