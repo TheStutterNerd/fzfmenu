@@ -13,20 +13,18 @@ elif [ "$FILE" == "emojilist" ]; then
   lines=`cat $SCRIPT_DIR/../lib/emojilist`
 fi
 
-set -f              # turn off globbing
-IFS='
-'                   # split at newlines only
-
-selection=$(printf '%s\n' ${lines[@]} | if [ -n "$TMUX" ]; then fzf-tmux -p; else fzf; fi )
-
-# unset IFS
-# set +f
+selection=$(for emoji in "$lines"
+  do
+    echo "$emoji"
+  done | $fzf
+)
 
 if [ -n "$selection" ]; then
   if [ "$FILE" == "emojijson" ]; then
-    echo "$selection" | cut -d '=' -f1 | xclip -selection clipboard
+    emoji=$(echo -n "$selection" | cut -d '=' -f1)
+    echo -n $emoji | xclip -selection clipboard
   elif [ "$FILE" == "emojilist" ]; then
-    echo "$selection" | cut -d ' ' -f1 | xclip -selection clipboard
+    emoji=$(echo -n "$selection" | cut -d ' ' -f1)
+    echo -n $emoji | xclip -selection clipboard
   fi
 fi
-

@@ -3,7 +3,7 @@
 source $HOME/.config/tsn/scripts/tmux/menu/lib/global
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-todo_file="/home/tsn/.config/tsn/vault/DuhVault/Today/Todo.md"
+todo_file="${todo:-/home/tsn/.config/tsn/vault/DuhVault/Today/Todo.md}"
 READ_FILE="tail -n +2 $todo_file"
 
 if [ -n "$1" ] && [ -n "$2" ]; then
@@ -11,15 +11,15 @@ if [ -n "$1" ] && [ -n "$2" ]; then
     tmp="- $2"
     grep -v "${tmp:6}" $todo_file > tmp_todo_file && mv tmp_todo_file $todo_file
   elif [ "$1" == "add" ]; then
-    if [[ $($2 | xargs) != " " ]]; then
+    if [ "$2" != " " ]; then
       sed -i "2i - [ ] $2" $todo_file
     fi
   elif [ "$1" == "toggle" ]; then
     tmp="- $2"
     if [ "${tmp:3:1}" == " " ]; then
-      cat $todo_file | sed -e "s/\- \[ \] ${tmp:6}/- [x] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
+      cat $todo_file | sed -E "s/\- \[ \] \<${tmp:6}\>/- [x] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
     else
-      cat $todo_file | sed -e "s/- \[x\] ${tmp:6}/- [ ] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
+      cat $todo_file | sed -E "s/- \[x\] \<${tmp:6}\>/- [ ] ${tmp:6}/" > tmp_todo_file && mv tmp_todo_file $todo_file
     fi
   fi
 else

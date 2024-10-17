@@ -9,11 +9,11 @@ is_tmux() {
 }
 
 if is_tmux; then
-  fzf="fzf-tmux -p"
+  fzf="fzf-tmux -p --color=16"
 else
-  fzf="fzf"
+  fzf="fzf --color=16"
 fi
 
 if [ "$1" == "--normal" ]; then
-  fzf="fzf"
+  fzf="fzf --color=16"
 fi
